@@ -20,6 +20,8 @@ public sealed class DoublyLinkedList<T>
         }
     }
 
+    public const String EmptyListReport = "List is Empty!";
+
     private DLLNode<T>? Head { get; set; }
     private DLLNode<T>? Tail { get; set; }
 
@@ -28,7 +30,8 @@ public sealed class DoublyLinkedList<T>
         Head = null;
         Tail = null;
     }
-
+    
+    #region Public methods
     /// <remarks>
     ///     No self mutation.
     /// </remarks>
@@ -73,53 +76,6 @@ public sealed class DoublyLinkedList<T>
     /// <remarks>
     ///     No self mutation.
     /// </remarks>
-    public Boolean PrintAll()
-    {
-        if (IsEmpty()) {
-            Console.WriteLine("List is Empty!");
-            return false;
-        }
-
-        Console.Write("List : ");
-
-        //Start at Head and traverse the list with next
-        DLLNode<T>? @current = Head;        
-        while (@current is not null) 
-        {
-            Console.Write(@current.Value);
-
-            @current = @current.Next;
-            if (@current is null)
-                break;
-
-            Console.Write(" -> ");
-        }
-
-        return true;
-    }
-
-    /// <remarks>
-    ///     No self mutation.
-    /// </remarks>
-    public Boolean PrintUniqueValues()
-    {
-        if (IsEmpty())
-        {
-            Console.WriteLine("List is Empty!");
-            return false;
-        }
-
-        DoublyLinkedList<T> duplicatedList;
-        duplicatedList = this.Duplicate();
-        duplicatedList.TryRemoveDuplicateValues();
-        duplicatedList.PrintAll();
-
-        return true;
-    }
-
-    /// <remarks>
-    ///     No self mutation.
-    /// </remarks>
     public UInt32 GetLength()
     {
         UInt32 lengthCount = 0;
@@ -140,6 +96,52 @@ public sealed class DoublyLinkedList<T>
     /// <remarks>
     ///     No self mutation.
     /// </remarks>
+    public String PrintAll()
+    {
+        if (IsEmpty()) {
+            return EmptyListReport;
+        }
+
+        String report = $"List : ";
+
+        //Start at Head and traverse the list with next
+        DLLNode<T>? @current = Head;        
+        while (@current is not null) 
+        {
+            report += $"{@current.Value}";
+
+            @current = @current.Next;
+            if (@current is null)
+                break;
+
+            report += $" -> ";
+        }
+
+        return report;
+    }
+
+    /// <remarks>
+    ///     No self mutation.
+    /// </remarks>
+    public String PrintUniqueValues()
+    {
+        if (IsEmpty())
+        {
+            return EmptyListReport;
+        }
+
+        DoublyLinkedList<T> duplicatedList;
+        duplicatedList = this.Duplicate();
+        duplicatedList.TryRemoveDuplicateValues();
+
+        String report = duplicatedList.PrintAll();
+
+        return report;
+    }    
+
+    /// <remarks>
+    ///     No self mutation.
+    /// </remarks>
     public DoublyLinkedList<T> Duplicate()
     {
         DoublyLinkedList<T> duplicatedList = new DoublyLinkedList<T>();
@@ -153,6 +155,9 @@ public sealed class DoublyLinkedList<T>
 
         return duplicatedList;
     }
+    #endregion
+
+    #region Internal methods
 
     /// <remarks>
     ///     Possibly mutate <see langword="this object"/>.
@@ -312,6 +317,9 @@ public sealed class DoublyLinkedList<T>
     /// </remarks>
     internal Boolean TryReverse()
     {
+        if (this.IsEmpty())
+            return false;
+
         DLLNode<T>? headBeforeReversal = Head;
 
         //Start at Head and traverse the list with next
@@ -341,7 +349,135 @@ public sealed class DoublyLinkedList<T>
 
         return true;
     }
+    
+    /// <remarks>
+    ///     Possibly mutate <see langword="this object"/>.
+    /// </remarks>
+    internal Boolean TryRemoveDuplicateValues()
+    {
+        if (this.IsEmpty())
+            return false;
 
+        DLLNode<T>? @current = Head;
+        DLLNode<T>? @further = null;
+
+        //Traverse the list
+        while ((@current is not null) && (@current.Next is not null))
+        {
+            @further = @current.Next;
+
+            //Traverse the list further from current
+            while (@further is not null)
+            {
+                //If a duplicate value is found
+                if (@current.Value?.Equals(@further.Value) ?? false)
+                {
+                    if (@further.Next is null && @further.Equals(Tail))
+                    {
+                        //If further node's Next is null then further points to Tail
+                        TryRemoveAtTail();
+                    }
+                    else if (@further.Next is not null && @further.Previous is not null)
+                    {
+                        //Make further node's Next Previous point to further's Previous
+                        //!!!In-place self mutation!!!
+                        @further.Next.Previous = @further.Previous;
+                        //Make further node's Previous Next point to further's Next
+                        //!!!In-place self mutation!!!
+                        @further.Previous.Next = @further.Next;
+                    }
+                }
+                else
+                {
+                    @further = @further.Next;
+                }                    
+            }
+
+            @current = @current.Next;
+        }
+
+        return true;
+    }
+
+    /// <remarks>
+    ///     No self mutation.
+    /// </remarks>
+    internal DoublyLinkedList<T> IntersectWith(DoublyLinkedList<T> other)
+    {
+        DoublyLinkedList<T> duplicatedList = this.Duplicate();
+
+        if (other.IsEmpty())
+            return duplicatedList;
+
+        DoublyLinkedList<T> intersectedList = new DoublyLinkedList<T>();
+
+        //Starting from Head
+        DLLNode<T>? @left = duplicatedList.Head;
+        DLLNode<T>? @right = other.Head;
+
+        //Traverse the orginial list
+        while (@left is not null)
+        {
+            //Traverse the other list
+            while (@right is not null)
+            {
+                //If a value match both nodes' value
+                if (@left.Value?.Equals(@right.Value) ?? false)
+                    intersectedList.TryInsertAtTail(@left.Value);
+
+                @right = @right.Next;
+            }
+            //Reset right to the other Head
+            @right = other.Head;
+            //Move left next towards Tail
+            @left = @left.Next;
+        }
+
+        intersectedList.TryRemoveDuplicateValues();
+        return intersectedList;
+    }
+
+    /// <remarks>
+    ///     No self mutation.
+    /// </remarks>
+    internal DoublyLinkedList<T> UnifyWith(DoublyLinkedList<T> other)
+    {
+        DoublyLinkedList<T> unifiedList = this.Duplicate();
+
+        if (other.IsEmpty())
+            return unifiedList;
+
+        //Starting from Head
+        DLLNode<T>? @current = unifiedList.Head;
+
+        if (unifiedList.IsEmpty() && @current is null )
+        {
+            //Make current point to the other Head
+            @current = other.Head;
+            //Make Tail point to the other Tail
+            unifiedList.Tail = other.Tail;
+            unifiedList.TryRemoveDuplicateValues();
+
+            return unifiedList;
+        }
+
+        //Traverse list until current is Tail
+        while (@current?.Next is not null)
+        {
+            @current = @current.Next;
+        }
+
+        //Make Tail point to the other Head
+        if (@current is not null) @current.Next = other.Head;
+
+        unifiedList.TryRemoveDuplicateValues();
+
+        return unifiedList;
+    }
+
+    #endregion Internal
+
+    #region Private methods
     /// <remarks>
     ///     Possibly mutate <see langword="this object"/>.
     /// </remarks>
@@ -402,127 +538,9 @@ public sealed class DoublyLinkedList<T>
 
         return false;
     }
+    #endregion
 
-    /// <remarks>
-    ///     Possibly mutate <see langword="this object"/>.
-    /// </remarks>
-    private Boolean TryRemoveDuplicateValues()
-    {
-        DLLNode<T>? @current = Head;
-        DLLNode<T>? @further = null;
-
-        //Traverse the list
-        while ((@current is not null) && (@current.Next is not null))
-        {
-            @further = @current.Next;
-
-            //Traverse the list further from current
-            while (@further is not null)
-            {
-                //If a duplicate value is found
-                if (@current.Value?.Equals(@further.Value) ?? false)
-                {
-                    if (@further.Next is null && @further.Equals(Tail))
-                    {
-                        //If further node's Next is null then further points to Tail
-                        TryRemoveAtTail();
-                    }
-                    else if (@further.Next is not null && @further.Previous is not null)
-                    {
-                        //Make further node's Next Previous point to further's Previous
-                        //!!!In-place self mutation!!!
-                        @further.Next.Previous = @further.Previous;
-                        //Make further node's Previous Next point to further's Next
-                        //!!!In-place self mutation!!!
-                        @further.Previous.Next = @further.Next;
-                    }
-                }
-                else
-                {
-                    @further = @further.Next;
-                }                    
-            }
-
-            @current = @current.Next;
-        }
-
-        return true;
-    }
-
-    /// <remarks>
-    ///     No self mutation.
-    /// </remarks>
-    private DoublyLinkedList<T> IntersectWith(DoublyLinkedList<T> other)
-    {
-        DoublyLinkedList<T> duplicatedList = this.Duplicate();
-
-        if (other.IsEmpty())
-            return duplicatedList;
-
-        DoublyLinkedList<T> intersectedList = new DoublyLinkedList<T>();
-
-        //Starting from Head
-        DLLNode<T>? @left = duplicatedList.Head;
-        DLLNode<T>? @right = other.Head;
-
-        //Traverse the orginial list
-        while (@left is not null)
-        {
-            //Traverse the other list
-            while (@right is not null)
-            {
-                //If a value match both nodes' value
-                if (@left.Value?.Equals(@right.Value) ?? false)
-                    intersectedList.TryInsertAtTail(@left.Value);
-
-                @right = @right.Next;
-            }
-            //Reset right to the other Head
-            @right = other.Head;
-            //Move left next towards Tail
-            @left = @left.Next;
-        }
-
-        intersectedList.TryRemoveDuplicateValues();
-        return intersectedList;
-    }
-
-    /// <remarks>
-    ///     No self mutation.
-    /// </remarks>
-    private DoublyLinkedList<T> UnifyWith(DoublyLinkedList<T> other)
-    {
-        DoublyLinkedList<T> unifiedList = this.Duplicate();
-
-        if (other.IsEmpty())
-            return unifiedList;
-
-        //Starting from Head
-        DLLNode<T>? @current = unifiedList.Head;
-
-        if (unifiedList.IsEmpty())
-        {
-            //Make current point to the other Head
-            @current = other.Head;
-            //Make Tail point to the other Tail
-            unifiedList.Tail = other.Tail;
-            unifiedList.TryRemoveDuplicateValues();
-
-            return unifiedList;
-        }
-
-        //Traverse list until current is Tail
-        while (@current?.Next is not null)
-        {
-            @current = @current.Next;
-        }
-
-        //Make Tail point to the other Head
-        @current.Next = other.Head;
-        unifiedList.TryRemoveDuplicateValues();
-
-        return unifiedList;
-    }
+    #region Static methods
 
     /// <remarks>
     ///     No self mutation.
@@ -557,7 +575,9 @@ public sealed class DoublyLinkedList<T>
         else if (right.IsEmpty())
             return left;
 
-        unifiedList = unifiedList.UnifyWith(left).UnifyWith(right);
+        unifiedList = left;
+        unifiedList = unifiedList.UnifyWith(right);
         return unifiedList;
     }
+    #endregion Static
 }
