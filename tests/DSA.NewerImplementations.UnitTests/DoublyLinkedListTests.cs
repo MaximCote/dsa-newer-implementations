@@ -15,6 +15,10 @@ public class DoublyLinkedListTests
     public const Int32 fourthIntegerSeed = 7;
     public const Int32 fifthIntegerSeed = 8;
     public const Int32 sixthIntegerSeed = 9;
+
+    public const Int32 firstNonSeededInteger = 42;
+    public const Int32 secondNonSeededInteger = 43;
+    public const Int32 thirdNonSeededInteger = 44;
     #endregion Integer constants
 
     #region String constants
@@ -355,7 +359,7 @@ public class DoublyLinkedListTests
 
         //Then
         resultingList.Should().NotBeNull();
-        resultingListPrintOutput.Should().BeEquivalentTo(listToDuplicatePrintOutput);
+        resultingListPrintOutput.Should().Be(listToDuplicatePrintOutput);
     }
 
     [Fact]
@@ -364,9 +368,9 @@ public class DoublyLinkedListTests
         //Given
         DoublyLinkedList<int> duplicatedSeededObject = DoublyLinkedList<int>.Duplicate(_SeededIntList);
         DoublyLinkedList<int> otherList = new DoublyLinkedList<int>();
-        otherList.TryInsertAtHead(6);
-        otherList.TryInsertAtHead(5);
-        otherList.TryInsertAtHead(4);
+        otherList.TryInsertAtHead(firstNonSeededInteger);
+        otherList.TryInsertAtHead(secondNonSeededInteger);
+        otherList.TryInsertAtHead(thirdNonSeededInteger);
 
         //When
         DoublyLinkedList<int> resultingList = DoublyLinkedList<int>.Intersect(duplicatedSeededObject, otherList);
@@ -382,9 +386,9 @@ public class DoublyLinkedListTests
         //Given
         DoublyLinkedList<int> duplicatedSeededObject = DoublyLinkedList<int>.Duplicate(_SeededIntList);
         DoublyLinkedList<int> otherList = new DoublyLinkedList<int>();
-        otherList.TryInsertAtHead(6);
-        otherList.TryInsertAtHead(5);
-        otherList.TryInsertAtHead(4);
+        otherList.TryInsertAtHead(firstNonSeededInteger);
+        otherList.TryInsertAtHead(secondNonSeededInteger);
+        otherList.TryInsertAtHead(thirdNonSeededInteger);
         String duplicatedSeededObjectPrintOutput = duplicatedSeededObject.PrintAll();
         String otherListPrintOutput = otherList.PrintAll();
 
