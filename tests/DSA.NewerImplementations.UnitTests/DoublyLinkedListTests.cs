@@ -351,11 +351,11 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList;
-        String listToDuplicatePrintOutput = seededObject.PrintAll();
+        String? listToDuplicatePrintOutput = seededObject.ToString();
 
         //When
         DoublyLinkedList<int> resultingList = DoublyLinkedList<int>.Duplicate(seededObject);
-        String resultingListPrintOutput = resultingList.PrintAll();
+        String? resultingListPrintOutput = resultingList.ToString();
 
         //Then
         resultingList.Should().NotBeNull();
@@ -467,6 +467,22 @@ public class DoublyLinkedListTests
 
         //Then
         report.Should().NotBe(unexpected);
+    }
+
+    [Fact]
+    public void Duplicate_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnNewListWithEqualValues()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList;
+        String? listToDuplicatePrintOutput = seededObject.ToString();
+
+        //When
+        DoublyLinkedList<int> resultingList = seededObject.Duplicate();
+        String? resultingListPrintOutput = resultingList.ToString();
+
+        //Then
+        resultingList.Should().NotBeNull();
+        resultingListPrintOutput.Should().Be(listToDuplicatePrintOutput);
     }
 
     #endregion Seeded list
