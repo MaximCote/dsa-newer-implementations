@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Xml.Linq;
-
+﻿
 namespace DSA.NewerImplementations;
 
 public sealed class DoublyLinkedList<T>
@@ -102,7 +99,7 @@ public sealed class DoublyLinkedList<T>
             return EmptyListReport;
         }
 
-        String report = $"List : ";
+        String report = String.Empty;
 
         //Start at Head and traverse the list with next
         DLLNode<T>? @current = Head;        
@@ -155,10 +152,9 @@ public sealed class DoublyLinkedList<T>
 
         return duplicatedList;
     }
-    #endregion
+    #endregion Public methods
 
     #region Internal methods
-
     /// <remarks>
     ///     Possibly mutate <see langword="this object"/>.
     /// </remarks>
@@ -474,8 +470,7 @@ public sealed class DoublyLinkedList<T>
 
         return unifiedList;
     }
-
-    #endregion Internal
+    #endregion Internal methods
 
     #region Private methods
     /// <remarks>
@@ -538,9 +533,25 @@ public sealed class DoublyLinkedList<T>
 
         return false;
     }
-    #endregion
+    #endregion Private methods
 
     #region Static methods
+    /// <remarks>
+    ///     No self mutation.
+    /// </remarks>
+    public static DoublyLinkedList<T> Duplicate(DoublyLinkedList<T> list)
+    {
+        DoublyLinkedList<T> duplicatedList = new DoublyLinkedList<T>();
+
+        //Start at Head and traverse the list with next
+        DLLNode<T>? @current = list.Head;
+        while (duplicatedList.TryInsertAtTail(@current))
+        {
+            @current = @current?.Next;
+        }
+
+        return duplicatedList;
+    }
 
     /// <remarks>
     ///     No self mutation.
@@ -579,5 +590,5 @@ public sealed class DoublyLinkedList<T>
         unifiedList = unifiedList.UnifyWith(right);
         return unifiedList;
     }
-    #endregion Static
+    #endregion Static methods
 }
