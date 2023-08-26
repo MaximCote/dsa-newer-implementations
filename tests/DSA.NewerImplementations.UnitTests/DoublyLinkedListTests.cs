@@ -29,9 +29,10 @@ public class DoublyLinkedListTests
     #endregion Seed constants
 
     private DoublyLinkedList<Int32> _SeededIntList = new ();
-    private DoublyLinkedList<String> _SeededStringList = new ();
+    private String _IntegerSeededPrintAllExpectedValues = String.Empty;
 
-    private String _SeededPrintAllExpectedValues = String.Empty;
+    private DoublyLinkedList<String> _SeededStringList = new ();
+    private String _StringSeededPrintAllExpectedValues = String.Empty;
 
     public DoublyLinkedListTests()
     {
@@ -45,7 +46,7 @@ public class DoublyLinkedListTests
         _SeededIntList.TryInsertAtTail(fifthIntegerSeed);
         _SeededIntList.TryInsertAtTail(sixthIntegerSeed);
         //
-        _SeededPrintAllExpectedValues = 
+        _IntegerSeededPrintAllExpectedValues = 
             $"{thirdIntegerSeed} -> {secondIntegerSeed} -> {firstIntegerSeed}"
             + $" -> " 
             + $"{fourthIntegerSeed} -> {fifthIntegerSeed} -> {sixthIntegerSeed}";
@@ -60,6 +61,11 @@ public class DoublyLinkedListTests
         _SeededStringList.TryInsertAtTail(fourthStringSeed);
         _SeededStringList.TryInsertAtTail(fifthStringSeed);
         _SeededStringList.TryInsertAtTail(sixthStringSeed);
+        //
+        _StringSeededPrintAllExpectedValues =
+            $"{thirdStringSeed} -> {secondStringSeed} -> {firstStringSeed}"
+            + $" -> "
+            + $"{fourthStringSeed} -> {fifthStringSeed} -> {sixthStringSeed}";
     }
 
     #region Doubly Linked List of type Int32
@@ -422,7 +428,7 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList;
-        String expectedValue = _SeededPrintAllExpectedValues;
+        String expectedValue = _IntegerSeededPrintAllExpectedValues;
 
         //When
         String resultOutput = seededObject.PrintAll();
@@ -436,7 +442,7 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList;
-        String expectedValue = _SeededPrintAllExpectedValues;
+        String expectedValue = _IntegerSeededPrintAllExpectedValues;
 
         //When
         String resultOutput = seededObject.PrintUniqueValues();
