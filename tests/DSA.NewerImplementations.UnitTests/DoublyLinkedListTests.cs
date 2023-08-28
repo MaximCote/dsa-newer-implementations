@@ -32,44 +32,39 @@ public class DoublyLinkedListTests
 
     #endregion Seed constants
 
-    private DoublyLinkedList<Int32> _SeededIntList = new ();
+    private DoublyLinkedList<Int32> _SeededIntList;
     private String _IntegerSeededPrintAllExpectedValues = String.Empty;
 
-    private DoublyLinkedList<String> _SeededStringList = new ();
-    private String _StringSeededPrintAllExpectedValues = String.Empty;
+    //private DoublyLinkedList<String> _SeededStringList;
+    //private String _StringSeededPrintAllExpectedValues = String.Empty;
 
     public DoublyLinkedListTests()
     {
         //Seed an object with the contained type of Int32
-        //Seed by inserting at Head
-        _SeededIntList.TryInsertAtHead(firstIntegerSeed);
-        _SeededIntList.TryInsertAtHead(secondIntegerSeed);
-        _SeededIntList.TryInsertAtHead(thirdIntegerSeed);
+        _SeededIntList = new DoublyLinkedList<Int32>(firstIntegerSeed, secondIntegerSeed);
+        //_SeededIntList.TryInsertAtHead(thirdIntegerSeed);
         //Seed by inserting at Tail
-        _SeededIntList.TryInsertAtTail(fourthIntegerSeed);
-        _SeededIntList.TryInsertAtTail(fifthIntegerSeed);
-        _SeededIntList.TryInsertAtTail(sixthIntegerSeed);
+        //_SeededIntList.TryInsertAtTail(fourthIntegerSeed);
+        //_SeededIntList.TryInsertAtTail(fifthIntegerSeed);
+        //_SeededIntList.TryInsertAtTail(sixthIntegerSeed);
         //
         _IntegerSeededPrintAllExpectedValues = 
-            $"{thirdIntegerSeed} -> {secondIntegerSeed} -> {firstIntegerSeed}"
-            + $" -> " 
-            + $"{fourthIntegerSeed} -> {fifthIntegerSeed} -> {sixthIntegerSeed}";
+            $"{firstIntegerSeed} -> {secondIntegerSeed}";
 
         //Seed an object with the contained type of String
-        //Seed by inserting at Head
-        _SeededStringList.TryInsertAtHead(firstStringSeed);
-        _SeededStringList.TryInsertAtHead(secondStringSeed);
-        _SeededStringList.TryInsertAtHead(thirdStringSeed);
+        //_SeededStringList.TryInsertAtHead(firstStringSeed);
+        //_SeededStringList.TryInsertAtHead(secondStringSeed);
+        //_SeededStringList.TryInsertAtHead(thirdStringSeed);
 
-        //Seed by inserting at Tail
-        _SeededStringList.TryInsertAtTail(fourthStringSeed);
-        _SeededStringList.TryInsertAtTail(fifthStringSeed);
-        _SeededStringList.TryInsertAtTail(sixthStringSeed);
-        //
-        _StringSeededPrintAllExpectedValues =
-            $"{thirdStringSeed} -> {secondStringSeed} -> {firstStringSeed}"
-            + $" -> "
-            + $"{fourthStringSeed} -> {fifthStringSeed} -> {sixthStringSeed}";
+        ////Seed by inserting at Tail
+        //_SeededStringList.TryInsertAtTail(fourthStringSeed);
+        //_SeededStringList.TryInsertAtTail(fifthStringSeed);
+        //_SeededStringList.TryInsertAtTail(sixthStringSeed);
+        ////
+        //_StringSeededPrintAllExpectedValues =
+        //    $"{thirdStringSeed} -> {secondStringSeed} -> {firstStringSeed}"
+        //    + $" -> "
+        //    + $"{fourthStringSeed} -> {fifthStringSeed} -> {sixthStringSeed}";
     }
 
     #region Doubly Linked List of type Int32
@@ -103,10 +98,10 @@ public class DoublyLinkedListTests
 
         //When
         DoublyLinkedList<int> resultingList = DoublyLinkedList<int>.Intersect(newLinkedList, otherNewLinkedList);
-        Boolean flag = resultingList.IsEmpty();
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
 
         //Then
-        flag.Should().BeTrue();
+        resultingListIsEmptyFlag.Should().BeTrue();
     }
 
     [Fact]
@@ -118,10 +113,10 @@ public class DoublyLinkedListTests
 
         //When
         DoublyLinkedList<int> resultingList = DoublyLinkedList<int>.Unify(newLinkedList, otherNewLinkedList);
-        Boolean flag = resultingList.IsEmpty();
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
 
         //Then
-        flag.Should().BeTrue();
+        resultingListIsEmptyFlag.Should().BeTrue();
     }
 
     #endregion Static methods
@@ -143,10 +138,10 @@ public class DoublyLinkedListTests
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
 
         //When
-        Boolean flag = newLinkedList.IsEmpty();
+        Boolean newListIsEmptyFlag = newLinkedList.IsEmpty();
 
         //Then
-        flag.Should().BeTrue();        
+        newListIsEmptyFlag.Should().BeTrue();        
     }
 
     [Fact]
@@ -156,10 +151,10 @@ public class DoublyLinkedListTests
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
 
         //When
-        Boolean flag = newLinkedList.HasDetectedLoop();
+        Boolean newListHasDetectedLoopFlag = newLinkedList.HasDetectedLoop();
 
         //Then
-        flag.Should().BeFalse();
+        newListHasDetectedLoopFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -167,13 +162,12 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
-        String expectedValue = DoublyLinkedList<int>.EmptyListReport;
 
         //When
-        String report = newLinkedList.PrintAll();
+        String newListPrintAllOutput = newLinkedList.PrintAll();
 
         //Then
-        report.Should().Be(expectedValue);
+        newListPrintAllOutput.Should().Be(DoublyLinkedList<int>.EmptyListReport);
     }
 
     [Fact]
@@ -181,13 +175,12 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
-        String expectedValue = DoublyLinkedList<int>.EmptyListReport;
 
         //When
-        String report = newLinkedList.PrintUniqueValues();
+        String newListPrintUniqueValuesOutput = newLinkedList.PrintUniqueValues();
 
         //Then
-        report.Should().Be(expectedValue);
+        newListPrintUniqueValuesOutput.Should().Be(DoublyLinkedList<int>.EmptyListReport);
     }
 
     [Fact]
@@ -195,13 +188,12 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
-        UInt32 expectedValue = 0;
 
         //When
-        UInt32 report = newLinkedList.GetLength();
+        UInt32 newListGetLengthOutput = newLinkedList.GetLength();
 
         //Then
-        report.Should().Be(expectedValue);
+        newListGetLengthOutput.Should().Be(0);
     }
 
     [Fact]
@@ -211,10 +203,10 @@ public class DoublyLinkedListTests
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
 
         //When
-        Boolean flag = newLinkedList.TryRemoveAtHead();
+        Boolean newListTryRemoveAtHeadFlag = newLinkedList.TryRemoveAtHead();
 
         //Then
-        flag.Should().BeFalse();
+        newListTryRemoveAtHeadFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -224,10 +216,10 @@ public class DoublyLinkedListTests
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
 
         //When
-        Boolean flag = newLinkedList.TryRemoveAtTail();
+        Boolean newListTryRemoveAtTailFlag = newLinkedList.TryRemoveAtTail();
 
         //Then
-        flag.Should().BeFalse();
+        newListTryRemoveAtTailFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -238,10 +230,10 @@ public class DoublyLinkedListTests
         Int32 valueToRemove = 0;
 
         //When
-        Boolean flag = newLinkedList.TryRemoveFromHead(valueToRemove);
+        Boolean newListTryRemoveFromHeadFlag = newLinkedList.TryRemoveFromHead(valueToRemove);
 
         //Then
-        flag.Should().BeFalse();
+        newListTryRemoveFromHeadFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -249,13 +241,13 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
-        Int32 valueToRemove = 9;
+        Int32 valueToRemove = firstNonSeededInteger;
 
         //When
-        Boolean flag = newLinkedList.TryRemoveFromHead(valueToRemove);
+        Boolean newListTryRemoveFromHeadFlag = newLinkedList.TryRemoveFromHead(valueToRemove);
 
         //Then
-        flag.Should().BeFalse();
+        newListTryRemoveFromHeadFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -266,10 +258,10 @@ public class DoublyLinkedListTests
         Int32 valueToRemove = 0;
 
         //When
-        Boolean flag = newLinkedList.TryRemoveFromTail(valueToRemove);
+        Boolean newListTryRemoveFromTailFlag = newLinkedList.TryRemoveFromTail(valueToRemove);
 
         //Then
-        flag.Should().BeFalse();
+        newListTryRemoveFromTailFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -277,13 +269,13 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
-        Int32 valueToRemove = 9;
+        Int32 valueToRemove = firstNonSeededInteger;
 
         //When
-        Boolean flag = newLinkedList.TryRemoveFromTail(valueToRemove);
+        Boolean newListRemoveFromTailFlag = newLinkedList.TryRemoveFromTail(valueToRemove);
 
         //Then
-        flag.Should().BeFalse();
+        newListRemoveFromTailFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -293,10 +285,10 @@ public class DoublyLinkedListTests
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
 
         //When
-        Boolean flag = newLinkedList.TryReverse();
+        Boolean newListTryReverseFlag = newLinkedList.TryReverse();
 
         //Then
-        flag.Should().BeFalse();
+        newListTryReverseFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -306,10 +298,10 @@ public class DoublyLinkedListTests
         DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
 
         //When
-        Boolean flag = newLinkedList.TryRemoveDuplicateValues();
+        Boolean newListTryRemoveDuplicateFlag = newLinkedList.TryRemoveDuplicateValues();
 
         //Then
-        flag.Should().BeFalse();
+        newListTryRemoveDuplicateFlag.Should().BeFalse();
     }
 
     [Fact]
@@ -321,10 +313,10 @@ public class DoublyLinkedListTests
 
         //When
         DoublyLinkedList<int> resultingList = newLinkedList.IntersectWith(otherNewLinkedList);
-        Boolean flag = resultingList.IsEmpty();
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
 
         //Then
-        flag.Should().BeTrue();
+        resultingListIsEmptyFlag.Should().BeTrue();
     }
 
     [Fact]
@@ -336,10 +328,10 @@ public class DoublyLinkedListTests
 
         //When
         DoublyLinkedList<int> resultingList = newLinkedList.UnifyWith(otherNewLinkedList);
-        Boolean flag = resultingList.IsEmpty();
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
 
         //Then
-        flag.Should().BeTrue();
+        resultingListIsEmptyFlag.Should().BeTrue();
     }
     #endregion New empty list
 
