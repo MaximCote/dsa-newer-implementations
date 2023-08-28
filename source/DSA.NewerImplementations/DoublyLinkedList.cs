@@ -27,7 +27,19 @@ public sealed class DoublyLinkedList<T>
         Head = null;
         Tail = null;
     }
-    
+    internal DoublyLinkedList(T headValue, T tailValue)
+    {
+        //Make Head point to the new node
+        Head = new DLLNode<T>(headValue);        
+        //Make Tail point to the new node
+        Tail = new DLLNode<T>(tailValue);
+
+        //Make the Head Next point to current Tail
+        Head.Next = Tail;
+        //Make the Tail Previous point to current Head
+        Tail.Previous = Head;
+    }
+
     #region Public methods
     /// <remarks>
     ///     No self mutation.
