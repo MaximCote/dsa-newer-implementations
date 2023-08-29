@@ -80,13 +80,13 @@ public class DoublyLinkedListTests
 
         //When
         DoublyLinkedList<int> resultingList = DoublyLinkedList<int>.Duplicate(newLinkedList);
-        String resultingListPrintOutput = resultingList.PrintAll();
+        String resultingListPrintAllOutput = resultingList.PrintAll();
 
         //Then
         resultingList.Should().NotBeNull();
         resultingList.Should().NotBe(newLinkedList);
-        resultingListPrintOutput.Should().NotBeNullOrEmpty();
-        resultingListPrintOutput.Should().Be(DoublyLinkedList<int>.EmptyListReport);
+        resultingListPrintAllOutput.Should().NotBeNullOrEmpty();
+        resultingListPrintAllOutput.Should().Be(DoublyLinkedList<int>.EmptyListReport);
     }
 
     [Fact]
@@ -194,6 +194,22 @@ public class DoublyLinkedListTests
 
         //Then
         newListGetLengthOutput.Should().Be(0);
+    }
+
+    [Fact]
+    public void Duplicate_ContainedTypeInt32_GivenNewList_ShouldReturnShouldReturnAnotherNewList()
+    {
+        //Given
+        DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
+        String? newListPrintAllOutput = newLinkedList.PrintAll();
+
+        //When
+        DoublyLinkedList<int> resultingList = newLinkedList.Duplicate();
+        String? resultingListPrintAllOutput = resultingList.PrintAll();
+
+        //Then
+        resultingList.Should().NotBeNull();
+        resultingListPrintAllOutput.Should().Be(newListPrintAllOutput);
     }
 
     [Fact]
@@ -343,15 +359,15 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList;
-        String? listToDuplicatePrintOutput = seededObject.ToString();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
         DoublyLinkedList<int> resultingList = DoublyLinkedList<int>.Duplicate(seededObject);
-        String? resultingListPrintOutput = resultingList.ToString();
+        String? resultingListPrintAllOutput = resultingList.PrintAll();
 
         //Then
         resultingList.Should().NotBeNull();
-        resultingListPrintOutput.Should().Be(listToDuplicatePrintOutput);
+        resultingListPrintAllOutput.Should().Be(seededListPrintAllOutput);
     }
 
     [Fact]
@@ -466,15 +482,50 @@ public class DoublyLinkedListTests
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList;
-        String? listToDuplicatePrintOutput = seededObject.ToString();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
         DoublyLinkedList<int> resultingList = seededObject.Duplicate();
-        String? resultingListPrintOutput = resultingList.ToString();
+        String? resultingListPrintAllOutput = resultingList.PrintAll();
 
         //Then
         resultingList.Should().NotBeNull();
-        resultingListPrintOutput.Should().Be(listToDuplicatePrintOutput);
+        resultingList.Should().NotBe(seededObject);
+        resultingListPrintAllOutput.Should().Be(seededListPrintAllOutput);
+    }
+
+    [Fact]
+    public void TryRemoveAtHead_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+
+        //When
+        Boolean seededListTryRemoveAtHeadFlag = seededObject.TryRemoveAtHead();
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveAtHeadFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{secondIntegerSeed}");
+    }
+
+    [Fact]
+    public void TryRemoveAtTail_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+
+        //When
+        Boolean seededListTryRemoveAtTailFlag = seededObject.TryRemoveAtTail();
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveAtTailFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{firstIntegerSeed}");
     }
 
     #endregion Seeded list
