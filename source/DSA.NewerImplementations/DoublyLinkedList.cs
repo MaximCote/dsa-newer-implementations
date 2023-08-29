@@ -157,7 +157,7 @@ public sealed class DoublyLinkedList<T>
 
         //Start at Head and traverse the list with next
         DLLNode<T>? @current = this.Head;
-        while (duplicatedList.TryInsertAtTail(@current))
+        while (@current is not null && duplicatedList.TryInsertAtTail(@current.Value))
         {
             @current = @current?.Next;
         }
@@ -223,18 +223,23 @@ public sealed class DoublyLinkedList<T>
         if (IsEmpty() || Tail is null)
             return false;
 
-        if ((Tail.Previous?.Equals(Head) ?? false)) {
+        if ( Tail.Equals(Head) ) 
+        {
             //!!!In-place self mutation!!!
-            Head = Tail;
+            Head = null;
+        }
+        else if ( Tail.Previous?.Equals(Head) ?? false )
+        {
+            //!!!In-place self mutation!!!
+            Head.Next = null;
+        }
+        else if ( Tail.Previous is not null )
+        {
+            //!!!In-place self mutation!!!
+            Tail.Previous.Next = null;            
         }
 
-        //!!!In-place self mutation!!!
         Tail = Tail.Previous;
-        if (Tail?.Previous is null)
-            return true;
-
-        //!!!In-place self mutation!!!
-        Tail.Next = null;
         return true;
     }
 
@@ -543,7 +548,7 @@ public sealed class DoublyLinkedList<T>
         //!!!In-place self mutation!!!
         Head ??= Tail;
 
-        return false;
+        return true;
     }
     #endregion Private methods
 
