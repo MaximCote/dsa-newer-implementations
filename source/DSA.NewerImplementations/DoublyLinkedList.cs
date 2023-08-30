@@ -22,6 +22,7 @@ public sealed class DoublyLinkedList<T>
     private DLLNode<T>? Head { get; set; }
     private DLLNode<T>? Tail { get; set; }
 
+    #region Constructors
     public DoublyLinkedList()
     {
         Head = null;
@@ -53,6 +54,7 @@ public sealed class DoublyLinkedList<T>
         linkedNode.Next = Tail;
         Tail.Previous = linkedNode;
     }
+    #endregion Constructors
 
     #region Public methods
     /// <remarks>
@@ -385,6 +387,9 @@ public sealed class DoublyLinkedList<T>
         if (this.IsEmpty())
             return false;
 
+        Boolean duplicateFound = false;
+        Boolean duplicateRemoved = false;
+
         DLLNode<T>? @current = Head;
         DLLNode<T>? @further = null;
 
@@ -399,11 +404,13 @@ public sealed class DoublyLinkedList<T>
                 //If a duplicate value is found
                 if (@current.Value?.Equals(@further.Value) ?? false)
                 {
-                    if (@further.Next is null && @further.Equals(Tail))
+                    duplicateFound = true;
+
+                    if (@further.Equals(Tail) && (@further.Next is null))
                     {
                         //If further node's Next is null then further points to Tail
                         //Remove the node with the duplicated value at Tail
-                        TryRemoveAtTail();
+                        duplicateRemoved = TryRemoveAtTail();
                     }
                     else if (@further.Next is not null && @further.Previous is not null)
                     {
@@ -414,18 +421,18 @@ public sealed class DoublyLinkedList<T>
                         //Make further node's Previous Next point to further's Next
                         //!!!In-place self mutation!!!
                         @further.Previous.Next = @further.Next;
+
+                        duplicateRemoved = true;
                     }
                 }
-                else
-                {
-                    @further = @further.Next;
-                }                    
+
+                @further = @further.Next;
             }
 
             @current = @current.Next;
         }
 
-        return true;
+        return duplicateFound && duplicateRemoved;
     }
 
     /// <remarks>
