@@ -478,7 +478,7 @@ public class DoublyLinkedListTests
     }
 
     [Fact]
-    public void Duplicate_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnNewListWithEqualValues()
+    public void Duplicate_ContainedTypeInt32_GivenSeededList_ShouldReturnNewListWithEqualValues()
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList;
@@ -495,7 +495,7 @@ public class DoublyLinkedListTests
     }
 
     [Fact]
-    public void TryRemoveAtHead_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnTrue()
+    public void TryRemoveAtHead_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
@@ -512,7 +512,7 @@ public class DoublyLinkedListTests
     }
 
     [Fact]
-    public void TryRemoveAtTail_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnTrue()
+    public void TryRemoveAtTail_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
     {
         //Given
         DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
@@ -526,6 +526,76 @@ public class DoublyLinkedListTests
         seededListTryRemoveAtTailFlag.Should().BeTrue();
         resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
         resultingListPrintAllOutput.Should().Be($"{firstIntegerSeed}");
+    }
+
+    [Fact]
+    public void TryRemoveFromHead_ContainedTypeInt32_GivenSeededListAndArgumentIsNonSeededValue_ShouldReturnFalse()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+        Int32 valueToRemove = firstNonSeededInteger;
+
+        //When
+        Boolean seededListTryRemoveFromHeadFlag = seededObject.TryRemoveFromHead(valueToRemove);
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveFromHeadFlag.Should().BeFalse();
+        resultingListPrintAllOutput.Should().Be(seededListPrintAllOutput);
+    }
+
+    [Fact]
+    public void TryRemoveFromHead_ContainedTypeInt32_GivenSeededListAndArgumentIsSeededValue_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+        Int32 valueToRemove = secondIntegerSeed;
+
+        //When
+        Boolean seededListTryRemoveFromHeadFlag = seededObject.TryRemoveFromHead(valueToRemove);
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveFromHeadFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{firstIntegerSeed}");
+    }
+
+    [Fact]
+    public void TryRemoveFromTail_ContainedTypeInt32_GivenSeededListAndArgumentIsNonSeededValue_ShouldReturnFalse()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+        Int32 valueToRemove = firstNonSeededInteger;
+
+        //When
+        Boolean seededListTryRemoveFromTailFlag = seededObject.TryRemoveFromTail(valueToRemove);
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveFromTailFlag.Should().BeFalse();
+        resultingListPrintAllOutput.Should().Be(seededListPrintAllOutput);
+    }
+
+    [Fact]
+    public void TryRemoveFromTail_ContainedTypeInt32_GivenSeededListAndArgumentIsSeededValue_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+        Int32 valueToRemove = firstIntegerSeed;
+
+        //When
+        Boolean seededListTryRemoveFromHeadFlag = seededObject.TryRemoveFromHead(valueToRemove);
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveFromHeadFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{secondIntegerSeed}");
     }
 
     #endregion Seeded list
