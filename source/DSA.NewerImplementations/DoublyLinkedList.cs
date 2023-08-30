@@ -440,12 +440,12 @@ public sealed class DoublyLinkedList<T>
     /// </remarks>
     internal DoublyLinkedList<T> IntersectWith(DoublyLinkedList<T> other)
     {
-        DoublyLinkedList<T> duplicatedList = this.Duplicate();
+        DoublyLinkedList<T> intersectedList = new DoublyLinkedList<T>();
 
         if (other.IsEmpty())
-            return duplicatedList;
+            return intersectedList;
 
-        DoublyLinkedList<T> intersectedList = new DoublyLinkedList<T>();
+        DoublyLinkedList<T> duplicatedList = this.Duplicate();
 
         //Starting from Head
         DLLNode<T>? @left = duplicatedList.Head;
