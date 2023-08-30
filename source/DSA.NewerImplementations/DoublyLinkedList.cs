@@ -503,9 +503,16 @@ public sealed class DoublyLinkedList<T>
             @current = @current.Next;
         }
 
-        //Make Tail point to the other Head
-        if (@current is not null) @current.Next = other.Head;
+        if (@current is not null && other.Head is not null)
+        {
+            //Make current Next point to the other Head
+            @current.Next = other.Head;
+            //Make other Head Previous point to current
+            other.Head.Previous = @current;
+        }
 
+        unifiedList.Tail = other.Tail;
+        
         unifiedList.TryRemoveDuplicateValues();
 
         return unifiedList;
