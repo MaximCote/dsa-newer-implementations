@@ -32,28 +32,41 @@ public class DoublyLinkedListTests
 
     #endregion Seed constants
 
-    private DoublyLinkedList<Int32> _SeededIntList;
-    private String _IntegerSeededPrintAllExpectedValues = String.Empty;
-    private String _IntegerSeededReversedPrintAllExpectedValues = String.Empty;
+    private DoublyLinkedList<Int32> _SeededIntListWithUniqueValues;
+    private DoublyLinkedList<Int32> _SeededIntListWithDuplicateValues;
+    private String _IntegerSeededWithUniqueValuesPrintAllExpectedValues = String.Empty;
+    private String _IntegerSeededWithDuplicateValuesPrintAllExpectedValues = String.Empty;
+    private String _IntegerSeededWithUniqueValuesReversedPrintAllExpectedValues = String.Empty;    
 
     //private DoublyLinkedList<String> _SeededStringList;
     //private String _StringSeededPrintAllExpectedValues = String.Empty;
 
     public DoublyLinkedListTests()
     {
-        //Seed an object with the contained type of Int32
-        _SeededIntList = new DoublyLinkedList<Int32>(firstIntegerSeed, secondIntegerSeed);
-        //_SeededIntList.TryInsertAtHead(thirdIntegerSeed);
+        //Seed an object with the contained type of Int32 and unique values
+        _SeededIntListWithUniqueValues = new DoublyLinkedList<Int32>(firstIntegerSeed, secondIntegerSeed);
+        //_SeededIntListWithUniqueValues.TryInsertAtHead(thirdIntegerSeed);
         //Seed by inserting at Tail
-        //_SeededIntList.TryInsertAtTail(fourthIntegerSeed);
-        //_SeededIntList.TryInsertAtTail(fifthIntegerSeed);
-        //_SeededIntList.TryInsertAtTail(sixthIntegerSeed);
+        //_SeededIntListWithUniqueValues.TryInsertAtTail(fourthIntegerSeed);
+        //_SeededIntListWithUniqueValues.TryInsertAtTail(fifthIntegerSeed);
+        //_SeededIntListWithUniqueValues.TryInsertAtTail(sixthIntegerSeed);
         //
-        _IntegerSeededPrintAllExpectedValues = 
+        _IntegerSeededWithUniqueValuesPrintAllExpectedValues = 
             $"{firstIntegerSeed} -> {secondIntegerSeed}";
 
-        _IntegerSeededReversedPrintAllExpectedValues =
+        _IntegerSeededWithUniqueValuesReversedPrintAllExpectedValues =
             $"{secondIntegerSeed} -> {firstIntegerSeed}";
+
+        //Seed an object with the contained type of Int32 and duplicate values
+        _SeededIntListWithDuplicateValues = new DoublyLinkedList<Int32>(firstIntegerSeed, secondIntegerSeed, firstIntegerSeed);
+        //_SeededIntListWithDuplicateValues.TryInsertAtHead(thirdIntegerSeed);
+        //Seed by inserting at Tail
+        //_SeededIntListWithDuplicateValues.TryInsertAtTail(fourthIntegerSeed);
+        //_SeededIntListWithDuplicateValues.TryInsertAtTail(fifthIntegerSeed);
+        //_SeededIntListWithDuplicateValues.TryInsertAtTail(sixthIntegerSeed);
+        //
+        _IntegerSeededWithDuplicateValuesPrintAllExpectedValues =
+            $"{firstIntegerSeed} -> {secondIntegerSeed} -> {firstIntegerSeed}";
 
         //Seed an object with the contained type of String
         //_SeededStringList.TryInsertAtHead(firstStringSeed);
@@ -397,7 +410,7 @@ public class DoublyLinkedListTests
     public void StaticDuplicate_ContainedTypeInt32_GivenArgumentListWithValues_ShouldReturnNewListWithEqualValues()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
         String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
@@ -413,7 +426,7 @@ public class DoublyLinkedListTests
     public void StaticIntersect_ContainedTypeInt32_GivenArgumentsTwoListsWithNoValueOverlap_ShouldReturnEmptyList()
     {
         //Given
-        DoublyLinkedList<int> duplicatedSeededObject = DoublyLinkedList<int>.Duplicate(_SeededIntList);
+        DoublyLinkedList<int> duplicatedSeededObject = DoublyLinkedList<int>.Duplicate(_SeededIntListWithUniqueValues);
         DoublyLinkedList<int> otherList = new DoublyLinkedList<int>();
         otherList.TryInsertAtHead(firstNonSeededInteger);
         otherList.TryInsertAtHead(secondNonSeededInteger);
@@ -431,7 +444,7 @@ public class DoublyLinkedListTests
     public void StaticUnify_ContainedTypeInt32_GivenSeededListAndArgumentIsListWithNoValueOverlap_ShouldReturnConcatenatedList()
     {
         //Given
-        DoublyLinkedList<int> duplicatedSeededObject = DoublyLinkedList<int>.Duplicate(_SeededIntList);
+        DoublyLinkedList<int> duplicatedSeededObject = DoublyLinkedList<int>.Duplicate(_SeededIntListWithUniqueValues);
         DoublyLinkedList<int> otherList = new DoublyLinkedList<int>();
         otherList.TryInsertAtHead(firstNonSeededInteger);
         otherList.TryInsertAtHead(secondNonSeededInteger);
@@ -452,7 +465,7 @@ public class DoublyLinkedListTests
     public void IsEmpty_ContainedTypeInt32_GivenSeededList_ShouldReturnFalse()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
 
         //When
         Boolean flag = seededObject.IsEmpty();
@@ -465,7 +478,7 @@ public class DoublyLinkedListTests
     public void HasDetectedLoop_ContainedTypeInt32_GivenSeededListWithNoLoop_ShouldReturnFalse()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
 
         //When
         Boolean flag = seededObject.HasDetectedLoop();
@@ -478,8 +491,8 @@ public class DoublyLinkedListTests
     public void PrintAll_ContainedTypeInt32_GivenSeededList_ShouldReturnStringWithAllSeededValues()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
-        String expectedValue = _IntegerSeededPrintAllExpectedValues;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
+        String expectedValue = _IntegerSeededWithUniqueValuesPrintAllExpectedValues;
 
         //When
         String resultOutput = seededObject.PrintAll();
@@ -492,8 +505,8 @@ public class DoublyLinkedListTests
     public void PrintUniqueValues_ContainedTypeInt32_GivenSeededList_ShouldReturnStringWithAllSeededUniqueValues()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
-        String expectedValue = _IntegerSeededPrintAllExpectedValues;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
+        String expectedValue = _IntegerSeededWithUniqueValuesPrintAllExpectedValues;
 
         //When
         String resultOutput = seededObject.PrintUniqueValues();
@@ -506,7 +519,7 @@ public class DoublyLinkedListTests
     public void GetLength_ContainedTypeInt32_GivenSeededList_ShouldNotReturnZero()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
         UInt32 unexpected = 0;
 
         //When
@@ -520,7 +533,7 @@ public class DoublyLinkedListTests
     public void Duplicate_ContainedTypeInt32_GivenSeededList_ShouldReturnNewListWithEqualValues()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList;
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues;
         String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
@@ -537,7 +550,7 @@ public class DoublyLinkedListTests
     public void TryInsertAtHead_ContainedTypeInt32_GivenSeededListArgumentIsNonSeededValue_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
@@ -547,7 +560,7 @@ public class DoublyLinkedListTests
         //Then
         seededListTryInsertAtHeadFlag.Should().BeTrue();
         resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
-        resultingListPrintAllOutput.Should().Be($"{firstNonSeededInteger} -> {_IntegerSeededPrintAllExpectedValues}");
+        resultingListPrintAllOutput.Should().Be($"{firstNonSeededInteger} -> {_IntegerSeededWithUniqueValuesPrintAllExpectedValues}");
 
     }
 
@@ -555,7 +568,7 @@ public class DoublyLinkedListTests
     public void TryInsertAtTail_ContainedTypeInt32_GivenSeededListArgumentIsNonSeededValue_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
@@ -565,14 +578,14 @@ public class DoublyLinkedListTests
         //Then
         seededListTryInsertAtTailFlag.Should().BeTrue();
         resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
-        resultingListPrintAllOutput.Should().Be($"{_IntegerSeededPrintAllExpectedValues} -> {firstNonSeededInteger}");
+        resultingListPrintAllOutput.Should().Be($"{_IntegerSeededWithUniqueValuesPrintAllExpectedValues} -> {firstNonSeededInteger}");
     }
 
     [Fact]
     public void TryRemoveAtHead_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
@@ -589,7 +602,7 @@ public class DoublyLinkedListTests
     public void TryRemoveAtTail_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
 
         //When
@@ -606,7 +619,7 @@ public class DoublyLinkedListTests
     public void TryRemoveFromHead_ContainedTypeInt32_GivenSeededListAndArgumentIsNonSeededValue_ShouldReturnFalse()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
         Int32 valueToRemove = firstNonSeededInteger;
 
@@ -623,7 +636,7 @@ public class DoublyLinkedListTests
     public void TryRemoveFromHead_ContainedTypeInt32_GivenSeededListAndArgumentIsSeededValue_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
         Int32 valueToRemove = secondIntegerSeed;
 
@@ -641,7 +654,7 @@ public class DoublyLinkedListTests
     public void TryRemoveFromTail_ContainedTypeInt32_GivenSeededListAndArgumentIsNonSeededValue_ShouldReturnFalse()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
         Int32 valueToRemove = firstNonSeededInteger;
 
@@ -658,7 +671,7 @@ public class DoublyLinkedListTests
     public void TryRemoveFromTail_ContainedTypeInt32_GivenSeededListAndArgumentIsSeededValue_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();
         Int32 valueToRemove = firstIntegerSeed;
 
@@ -676,7 +689,7 @@ public class DoublyLinkedListTests
     public void TryReverse_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
     {
         //Given
-        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
         String? seededListPrintAllOutput = seededObject.PrintAll();      
 
         //When
@@ -686,7 +699,104 @@ public class DoublyLinkedListTests
         //Then
         seededListTryReverseFlag.Should().BeTrue();
         resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
-        resultingListPrintAllOutput.Should().Be($"{_IntegerSeededReversedPrintAllExpectedValues}");
+        resultingListPrintAllOutput.Should().Be($"{_IntegerSeededWithUniqueValuesReversedPrintAllExpectedValues}");
+    }
+
+    [Fact]
+    public void TryRemoveDuplicateValues_ContainedTypeInt32_GivenSeededListWithUniqueValues_ShouldReturnFalse()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+
+        //When
+        Boolean seededListTryRemoveDuplicateFlag = seededObject.TryRemoveDuplicateValues();
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveDuplicateFlag.Should().BeFalse();
+        resultingListPrintAllOutput.Should().Be(seededListPrintAllOutput);
+    }
+
+    [Fact]
+    public void TryRemoveDuplicateValues_ContainedTypeInt32_GivenSeededListWithDuplicateValues_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntListWithDuplicateValues.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+
+        //When
+        Boolean seededListTryRemoveDuplicateFlag = seededObject.TryRemoveDuplicateValues();
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryRemoveDuplicateFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be(_IntegerSeededWithUniqueValuesPrintAllExpectedValues);
+    }
+
+    [Fact]
+    public void IntersectWith_ContainedTypeInt32_GivenSeededListAndArgumentIsNewList_ShouldReturnEmptyList()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
+        DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();       
+
+        //When
+        DoublyLinkedList<int> resultingList = seededObject.IntersectWith(newLinkedList);
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
+
+        //Then
+        resultingListIsEmptyFlag.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IntersectWith_ContainedTypeInt32_GivenSeededListAndArgumentAtLeastOneEqualValue_ShouldReturnListWithAtLeastOneValue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
+        DoublyLinkedList<int> otherSeededObject = _SeededIntListWithDuplicateValues.Duplicate();
+
+        //When
+        DoublyLinkedList<int> resultingList = seededObject.IntersectWith(otherSeededObject);
+        String? resultingListPrintAllOutput = resultingList.PrintAll();
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
+
+        //Then
+        resultingListIsEmptyFlag.Should().BeFalse();
+        resultingListPrintAllOutput.Should().Be(_IntegerSeededWithUniqueValuesPrintAllExpectedValues);
+    }
+
+    [Fact]
+    public void UnifyWith_ContainedTypeInt32_GivenSeededListAndArgumentIsNewList_ShouldReturnSeededListClone()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
+        DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
+
+        //When
+        DoublyLinkedList<int> resultingList = seededObject.UnifyWith(newLinkedList);
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
+
+        //Then
+        resultingListIsEmptyFlag.Should().BeFalse();
+    }
+
+    [Fact]
+    public void UnifyWith_ContainedTypeInt32_GivenSeededListAndArgumentIsOtherList_ShouldReturnCombinedListWithUniqueValues()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntListWithUniqueValues.Duplicate();
+        DoublyLinkedList<int> otherList = new DoublyLinkedList<int>(firstIntegerSeed, secondIntegerSeed, firstNonSeededInteger);
+
+        //When
+        DoublyLinkedList<int> resultingList = seededObject.UnifyWith(otherList);
+        String? resultingListPrintAllOutput = resultingList.PrintAll();
+        Boolean resultingListIsEmptyFlag = resultingList.IsEmpty();
+
+        //Then
+        resultingListIsEmptyFlag.Should().BeFalse();
+        resultingListPrintAllOutput.Should().Be(_IntegerSeededWithUniqueValuesPrintAllExpectedValues + " -> " + firstNonSeededInteger);
     }
 
     #endregion Seeded list
