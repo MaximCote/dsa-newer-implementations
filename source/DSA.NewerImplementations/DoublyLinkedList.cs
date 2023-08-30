@@ -39,6 +39,20 @@ public sealed class DoublyLinkedList<T>
         //Make the Tail Previous point to current Head
         Tail.Previous = Head;
     }
+    internal DoublyLinkedList(T headValue, T linkedValue, T tailValue)
+    {
+        //Make Head point to the new node
+        Head = new DLLNode<T>(headValue);
+        //Make Tail point to the new node
+        Tail = new DLLNode<T>(tailValue);
+
+        DLLNode<T> linkedNode = new DLLNode<T>(linkedValue);
+
+        Head.Next = linkedNode;
+        linkedNode.Previous = Head;
+        linkedNode.Next = Tail;
+        Tail.Previous = linkedNode;
+    }
 
     #region Public methods
     /// <remarks>
@@ -388,10 +402,12 @@ public sealed class DoublyLinkedList<T>
                     if (@further.Next is null && @further.Equals(Tail))
                     {
                         //If further node's Next is null then further points to Tail
+                        //Remove the node with the duplicated value at Tail
                         TryRemoveAtTail();
                     }
                     else if (@further.Next is not null && @further.Previous is not null)
                     {
+                        //Remove the node that is most towards the Tail
                         //Make further node's Next Previous point to further's Previous
                         //!!!In-place self mutation!!!
                         @further.Next.Previous = @further.Previous;
