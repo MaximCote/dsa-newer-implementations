@@ -34,6 +34,7 @@ public class DoublyLinkedListTests
 
     private DoublyLinkedList<Int32> _SeededIntList;
     private String _IntegerSeededPrintAllExpectedValues = String.Empty;
+    private String _IntegerSeededReversedPrintAllExpectedValues = String.Empty;
 
     //private DoublyLinkedList<String> _SeededStringList;
     //private String _StringSeededPrintAllExpectedValues = String.Empty;
@@ -50,6 +51,9 @@ public class DoublyLinkedListTests
         //
         _IntegerSeededPrintAllExpectedValues = 
             $"{firstIntegerSeed} -> {secondIntegerSeed}";
+
+        _IntegerSeededReversedPrintAllExpectedValues =
+            $"{secondIntegerSeed} -> {firstIntegerSeed}";
 
         //Seed an object with the contained type of String
         //_SeededStringList.TryInsertAtHead(firstStringSeed);
@@ -210,6 +214,41 @@ public class DoublyLinkedListTests
         //Then
         resultingList.Should().NotBeNull();
         resultingListPrintAllOutput.Should().Be(newListPrintAllOutput);
+    }
+
+    [Fact]
+    public void TryInsertAtHead_ContainedTypeInt32_GivenNewList_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
+        String? newListPrintAllOutput = newLinkedList.PrintAll();
+
+        //When
+        Boolean newListTryInsertAtHeadFlag = newLinkedList.TryInsertAtHead(firstNonSeededInteger);
+        String? resultingListPrintAllOutput = newLinkedList.PrintAll();
+
+        //Then
+        newListTryInsertAtHeadFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(newListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{firstNonSeededInteger}");
+
+    }
+
+    [Fact]
+    public void TryInsertAtTail_ContainedTypeInt32_GivenNewList_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> newLinkedList = new DoublyLinkedList<int>();
+        String? newListPrintAllOutput = newLinkedList.PrintAll();
+
+        //When
+        Boolean newListTryInsertAtTailFlag = newLinkedList.TryInsertAtTail(firstNonSeededInteger);
+        String? resultingListPrintAllOutput = newLinkedList.PrintAll();
+
+        //Then
+        newListTryInsertAtTailFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(newListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{firstNonSeededInteger}");
     }
 
     [Fact]
@@ -495,6 +534,41 @@ public class DoublyLinkedListTests
     }
 
     [Fact]
+    public void TryInsertAtHead_ContainedTypeInt32_GivenSeededListArgumentIsNonSeededValue_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+
+        //When
+        Boolean seededListTryInsertAtHeadFlag = seededObject.TryInsertAtHead(firstNonSeededInteger);
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryInsertAtHeadFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{firstNonSeededInteger} -> {_IntegerSeededPrintAllExpectedValues}");
+
+    }
+
+    [Fact]
+    public void TryInsertAtTail_ContainedTypeInt32_GivenSeededListArgumentIsNonSeededValue_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();
+
+        //When
+        Boolean seededListTryInsertAtTailFlag = seededObject.TryInsertAtTail(firstNonSeededInteger);
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryInsertAtTailFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{_IntegerSeededPrintAllExpectedValues} -> {firstNonSeededInteger}");
+    }
+
+    [Fact]
     public void TryRemoveAtHead_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
     {
         //Given
@@ -596,6 +670,23 @@ public class DoublyLinkedListTests
         seededListTryRemoveFromHeadFlag.Should().BeTrue();
         resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
         resultingListPrintAllOutput.Should().Be($"{secondIntegerSeed}");
+    }
+
+    [Fact]
+    public void TryReverse_ContainedTypeInt32_GivenSeededList_ShouldReturnTrue()
+    {
+        //Given
+        DoublyLinkedList<int> seededObject = _SeededIntList.Duplicate();
+        String? seededListPrintAllOutput = seededObject.PrintAll();      
+
+        //When
+        Boolean seededListTryReverseFlag = seededObject.TryReverse();
+        String? resultingListPrintAllOutput = seededObject.PrintAll();
+
+        //Then
+        seededListTryReverseFlag.Should().BeTrue();
+        resultingListPrintAllOutput.Should().NotBe(seededListPrintAllOutput);
+        resultingListPrintAllOutput.Should().Be($"{_IntegerSeededReversedPrintAllExpectedValues}");
     }
 
     #endregion Seeded list
